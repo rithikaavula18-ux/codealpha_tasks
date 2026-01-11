@@ -1,0 +1,58 @@
+# Hardcoded stock prices
+stock_prices = {"AAPL": 180, "TSLA": 250, "GOOGL": 140, "MSFT": 310}
+
+portfolio = {}
+print("Stock Portfolio Tracker")
+print("Available stocks:", ", ".join(stock_prices.keys()))
+
+# Taking user input
+while True:
+    stock = input("Enter stock name (or type 'done'): ").upper()
+    if stock == "DONE":
+        break
+    if stock not in stock_prices:
+        print("Invalid stock! Try again.")
+        continue
+
+    qty = input("Enter quantity: ")
+    if not qty.isdigit():
+        print("Enter a valid number!")
+        continue
+
+    portfolio[stock] = portfolio.get(stock, 0) + int(qty)
+
+# Calculating total investment
+total = 0
+print("\nPortfolio Summary:")
+for stock, qty in portfolio.items():
+    value = stock_prices[stock] * qty
+    total += value
+    print(f"{stock}: {qty} × {stock_prices[stock]} = {value}")
+
+print(f"\nTotal Investment Value: {total}")
+
+# Optional save to file
+save = input("\nSave result? (yes/no): ").lower()
+if save == "yes":
+    filename = input("Enter filename (portfolio.txt or portfolio.csv): ")
+
+    if filename.endswith(".txt"):
+        with open(filename, "w") as f:
+            f.write("Stock,Quantity,Price,Value\n")
+            for stock, qty in portfolio.items():
+                f.write(f"{stock},{qty},{stock_prices[stock]},{stock_prices[stock] * qty}\n")
+            f.write(f"Total,,, {total}\n")
+        print("Saved as text file!")
+
+    elif filename.endswith(".csv"):
+        with open(filename, "w") as f:
+            f.write("Stock,Quantity,Price,Value\n")
+            for stock, qty in portfolio.items():
+                f.write(f"{stock},{qty},{stock_prices[stock]},{stock_prices[stock] * qty}\n")
+            f.write(f"Total,,, {total}\n")
+        print("Saved as CSV file!")
+
+    else:
+        print("Invalid file type! Not saved.")
+else:
+    print("Not saved.")

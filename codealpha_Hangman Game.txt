@@ -1,0 +1,47 @@
+import random
+
+# 5 predefined words
+words = ["apple", "mango", "grapes", "peach", "berry"]
+
+# Select random word
+word = random.choice(words)
+
+guessed letters = []
+wrong attempts = 0
+max_attempts = 6
+
+
+# Game loop
+while wrong attempts < max_attempts:
+    # Display word with blanks
+    output = ""
+    for letter in word:
+        if letter in guessed letters:
+            output += letter
+        else:
+            output += "_"
+    print("\nword:", output)
+
+    # Check win condition
+    if output == word:
+        print("You won!")
+        break
+
+    # Take input
+    guess = input("Guess a letter: ").lower()
+
+    # Conditions using if-else
+    if guess in guessed letters:
+        print("You already guessed that letter!")
+    elif guess in word:
+        print("Correct guess!")
+        guessed_letters.append(guess)
+    else:
+        print("Wrong guess!")
+        guessed_letters.append(guess)
+        wrong attempts += 1
+        print("Attempts left:", max_attempts - wrong attempts)
+
+# Lose condition
+if wrong attempts == max_attempts:
+    print("\nyou lost! The word was:", word)

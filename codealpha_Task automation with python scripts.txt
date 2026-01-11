@@ -1,0 +1,66 @@
+import os
+import shutil
+import re
+import requests
+
+def move_jpg_files():
+    source_folder = "source"
+    destination_folder = "destination"
+    os.makedirs(destination_folder, exist_ok=True)
+
+    for file in os.listdir(source_folder):
+        if file.lower().endswith(".jpg"):
+            shutil.move(os.path.join(source_folder, file),
+                        os.path.join(destination_folder, file))
+
+    print("All .jpg files moved successfully!")
+
+def extract_emails():
+    input_file = "emails.txt"
+    output_file = "extracted_emails.txt"
+
+    with open(input_file, "r") as file:
+        content = file.read()
+
+    emails = re.findall(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}", content)
+
+    with open(output_file, "w") as file:
+        for email in emails:
+            file.write(email + "\n")
+
+    print("Emails extracted and saved successfully!")
+
+def scrape_title():
+    url = "https://example.com"
+    output_file = "webpage_title.txt"
+
+    response = requests.get(url)
+    title = re.search(r"<title>(.*?)</title>", response.text, re.IGNORECASE)
+
+    if title:
+        with open(output_file, "w") as file:
+            file.write(title.group(1))
+        print("Webpage title saved successfully!")
+    else:
+        print("Title not found!")
+
+while True:
+    print("\nSelect a Task to Automate:")
+    print("1. Move all .jpg files to new folder")
+    print("2. Extract emails from text file")
+    print("3. Scrape webpage title and save it")
+    print("4. Exit")
+
+    choice = input("Enter your choice: ")
+
+    if choice == "1":
+        move_jpg_files()
+    elif choice == "2":
+        extract_emails()
+    elif choice == "3":
+        scrape_title()
+    elif choice == "4":
+        print("Exiting...")
+        break
+    else:
+        print("Invalid choice! Please try again.")
